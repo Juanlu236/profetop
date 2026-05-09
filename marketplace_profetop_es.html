@@ -1,0 +1,398 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);position:sticky;top:0;z-index:10;}
+.logo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:500;cursor:pointer;}
+.logo-icon{width:30px;height:30px;border-radius:9px;background:#FCEBEB;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.btn-primary{padding:7px 16px;font-size:12px;background:#A32D2D;color:white;border:none;border-radius:var(--border-radius-md);cursor:pointer;font-weight:500;}
+.btn-outline{padding:7px 16px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-primary);cursor:pointer;}
+.screen{display:none;}
+.screen.active{display:block;}
+.nav-bar{display:flex;gap:2px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);padding:6px 20px;flex-wrap:wrap;gap:6px;align-items:center;}
+.nav-bar span{font-size:11px;color:#791F1F;font-weight:500;}
+.npill{font-size:11px;padding:4px 12px;border:0.5px solid #F09595;border-radius:12px;background:transparent;color:#791F1F;cursor:pointer;}
+.npill:hover,.npill.on{background:#FCEBEB;}
+.hero{background:linear-gradient(135deg,#791F1F 0%,#A32D2D 60%,#C94040 100%);padding:44px 24px 38px;text-align:center;}
+.hero h1{font-size:30px;font-weight:500;color:white;margin-bottom:8px;}
+.hero h1 span{color:#FFCFCF;}
+.hero p{font-size:13px;color:#FFCFCF;margin-bottom:22px;max-width:400px;margin-left:auto;margin-right:auto;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-hero{padding:10px 22px;font-size:13px;border-radius:var(--border-radius-md);cursor:pointer;font-weight:500;}
+.btn-hero-pri{background:white;color:#791F1F;border:none;}
+.btn-hero-sec{background:transparent;color:white;border:1.5px solid rgba(255,255,255,0.5);}
+.tabs-top{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);}
+.tab{padding:9px 15px;font-size:12px;cursor:pointer;color:var(--color-text-tertiary);border-bottom:2px solid transparent;margin-bottom:-0.5px;}
+.tab.on{color:#791F1F;border-bottom-color:#A32D2D;font-weight:500;}
+.search-bar{display:flex;align-items:center;gap:8px;padding:10px 20px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);flex-wrap:wrap;}
+.search-input{flex:1;min-width:180px;padding:7px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);font-size:12px;background:var(--color-background-primary);color:var(--color-text-primary);}
+.pill{padding:5px 11px;font-size:11px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;white-space:nowrap;}
+.pill.on{background:#FCEBEB;border-color:#A32D2D;color:#791F1F;}
+.layout{display:flex;min-height:380px;}
+.sidebar{width:185px;min-width:185px;border-right:0.5px solid var(--color-border-tertiary);padding:12px 0;}
+.cycle-hdr{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;cursor:pointer;font-size:12px;font-weight:500;color:var(--color-text-primary);}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:6px;}
+.subj{display:flex;justify-content:space-between;align-items:center;padding:5px 14px 5px 28px;font-size:12px;color:var(--color-text-secondary);cursor:pointer;}
+.subj:hover{background:var(--color-background-secondary);}
+.subj.on{color:#791F1F;font-weight:500;background:#FCEBEB;}
+.scnt{font-size:10px;color:var(--color-text-tertiary);}
+.divider{height:0.5px;background:var(--color-border-tertiary);margin:8px 14px;}
+.content{flex:1;padding:14px 18px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;cursor:pointer;transition:border-color .15s;}
+.card:hover{border-color:#A32D2D;}
+.card-thumb{height:74px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.card-body{padding:9px 11px;}
+.card-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;line-height:1.3;}
+.tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px;}
+.tag{font-size:9px;font-weight:500;padding:2px 6px;border-radius:8px;}
+.tp{background:#FCEBEB;color:#791F1F;}
+.ts{background:#E6F1FB;color:#0C447C;}
+.tm{background:#EEEDFE;color:#3C3489;}
+.card-foot{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--color-text-tertiary);}
+.price{font-size:13px;font-weight:500;color:var(--color-text-primary);}
+.free{background:#EAF3DE;color:#3B6D11;font-size:9px;font-weight:500;padding:2px 6px;border-radius:8px;}
+.star{color:#EF9F27;}
+.top-badge{background:#A32D2D;color:white;font-size:9px;font-weight:500;padding:2px 6px;border-radius:8px;display:inline-flex;align-items:center;gap:3px;}
+.banner{background:#FCEBEB;border-bottom:0.5px solid #F09595;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.banner-text{font-size:13px;color:#791F1F;font-weight:500;}
+.banner-sub{font-size:11px;color:#A32D2D;margin-top:1px;}
+/* login/register */
+.modal-bg{background:rgba(0,0,0,0.32);display:flex;align-items:center;justify-content:center;min-height:500px;}
+.modal{background:var(--color-background-primary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);width:100%;max-width:340px;padding:24px;}
+.modal h2{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;}
+.modal p{font-size:12px;color:var(--color-text-secondary);margin-bottom:18px;}
+.fg{margin-bottom:12px;}
+.fg label{font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px;}
+.fg input,.fg select{width:100%;padding:8px 10px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);}
+/* docente */
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:13px 18px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);}
+.metric{background:var(--color-background-primary);border-radius:var(--border-radius-md);padding:11px 13px;}
+.mlabel{font-size:11px;color:var(--color-text-tertiary);margin-bottom:4px;}
+.mval{font-size:20px;font-weight:500;color:var(--color-text-primary);}
+.mdelta{font-size:11px;margin-top:3px;}
+.up{color:#0F6E56;}.dn{color:#A32D2D;}.neu{color:var(--color-text-tertiary);}
+.tbl{width:100%;border-collapse:collapse;table-layout:fixed;}
+.tbl th{font-size:11px;color:var(--color-text-tertiary);font-weight:400;text-align:left;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.tbl td{font-size:12px;color:var(--color-text-secondary);padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tname{font-weight:500;color:var(--color-text-primary);font-size:12px;display:block;margin-bottom:2px;}
+.badge{font-size:9px;font-weight:500;padding:2px 6px;border-radius:8px;display:inline-block;}
+.b-ok{background:#E1F5EE;color:#085041;}.b-rev{background:#FAEEDA;color:#633806;}.b-new{background:#E6F1FB;color:#0C447C;}.b-hold{background:#FCEBEB;color:#791F1F;}
+.rev-item{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:9px 11px;margin-bottom:7px;}
+.rev-title{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px;}
+.rev-meta{font-size:11px;color:var(--color-text-tertiary);margin-bottom:7px;}
+.rev-btns{display:flex;gap:5px;}
+.abtn{font-size:11px;padding:3px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);cursor:pointer;}
+.abtn.ok{border-color:#5DCAA5;color:#0F6E56;}.abtn.dn{border-color:#F09595;color:#A32D2D;}
+</style>
+
+<h2 class="sr-only">Demo interactiva de Profetop.es: tienda, panel docente y panel de administración</h2>
+
+<div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;">
+
+<nav>
+  <div class="logo" onclick="go('home')">
+    <div class="logo-icon">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="#A32D2D" stroke="#791F1F" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span style="color:#791F1F;">Profe</span><span style="color:#A32D2D;">top</span><span style="color:#bbb;font-size:13px;">.es</span>
+  </div>
+  <div style="display:flex;gap:16px;font-size:13px;color:var(--color-text-secondary);">
+    <span style="cursor:pointer;" onclick="go('home')">Tienda</span>
+    <span style="cursor:pointer;" onclick="go('docente')">Mi panel</span>
+    <span style="cursor:pointer;" onclick="go('admin')">Admin</span>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <button class="btn-outline" onclick="go('login')">Entrar</button>
+    <button class="btn-primary" onclick="go('register')">Vender recursos</button>
+  </div>
+</nav>
+
+<div class="nav-bar">
+  <span>Demo:</span>
+  <button class="npill on" onclick="go('home');setOn(this)">Tienda</button>
+  <button class="npill" onclick="go('detail');setOn(this)">Recurso</button>
+  <button class="npill" onclick="go('login');setOn(this)">Iniciar sesión</button>
+  <button class="npill" onclick="go('register');setOn(this)">Registro profe</button>
+  <button class="npill" onclick="go('docente');setOn(this)">Panel docente</button>
+  <button class="npill" onclick="go('admin');setOn(this)">Panel admin</button>
+</div>
+
+<!-- TIENDA -->
+<div id="s-home" class="screen active">
+  <div class="hero">
+    <h1>Los mejores recursos, <span>para los mejores profes</span></h1>
+    <p>El marketplace donde los docentes españoles encuentran y venden materiales didácticos de primaria y secundaria.</p>
+    <div class="hero-btns">
+      <button class="btn-hero btn-hero-pri" onclick="go('home')">Explorar recursos ★</button>
+      <button class="btn-hero btn-hero-sec" onclick="go('register')">Empieza a vender ↗</button>
+    </div>
+  </div>
+  <div class="banner">
+    <div>
+      <div class="banner-text">¿Preparas tus propios materiales? Compártelos y gana dinero</div>
+      <div class="banner-sub">Miles de profes ya venden en Profetop.es — tú pones el precio</div>
+    </div>
+    <button class="btn-primary" onclick="go('register')">Empieza a vender ↗</button>
+  </div>
+  <div class="tabs-top">
+    <div class="tab on">Todos</div>
+    <div class="tab">Matemáticas</div>
+    <div class="tab">Lengua</div>
+    <div class="tab">Ciencias</div>
+    <div class="tab">Historia</div>
+    <div class="tab">Inglés</div>
+  </div>
+  <div class="search-bar">
+    <input class="search-input" placeholder="Buscar recursos: fichas, presentaciones, exámenes...">
+    <div class="pill on">Primaria</div>
+    <div class="pill">Secundaria</div>
+    <div class="pill">Gratis</div>
+    <div class="pill">Mejor valorados</div>
+    <div class="pill">★ Top ventas</div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="cycle-hdr"><span style="display:flex;align-items:center;"><span class="dot" style="background:#A32D2D;"></span>Primaria</span><span style="font-size:10px;color:var(--color-text-tertiary);">›</span></div>
+      <div class="subj on">Matemáticas <span class="scnt">284</span></div>
+      <div class="subj">Lengua y Literatura <span class="scnt">231</span></div>
+      <div class="subj">Ciencias Naturales <span class="scnt">178</span></div>
+      <div class="subj">Ciencias Sociales <span class="scnt">142</span></div>
+      <div class="subj">Inglés <span class="scnt">198</span></div>
+      <div class="subj">Ed. Artística <span class="scnt">96</span></div>
+      <div class="subj">Ed. Física <span class="scnt">74</span></div>
+      <div class="subj">Religión / Valores <span class="scnt">58</span></div>
+      <div class="divider"></div>
+      <div class="cycle-hdr"><span style="display:flex;align-items:center;"><span class="dot" style="background:#378ADD;"></span>Secundaria (ESO)</span><span style="font-size:10px;color:var(--color-text-tertiary);">›</span></div>
+      <div class="subj">Matemáticas <span class="scnt">196</span></div>
+      <div class="subj">Lengua y Literatura <span class="scnt">174</span></div>
+      <div class="subj">Física y Química <span class="scnt">143</span></div>
+      <div class="subj">Historia y Geografía <span class="scnt">132</span></div>
+      <div class="subj">Filosofía <span class="scnt">67</span></div>
+      <div class="subj">Tecnología <span class="scnt">89</span></div>
+      <div class="divider"></div>
+      <div class="subj" style="display:flex;justify-content:space-between;padding-left:14px;"><span>Ambos ciclos</span><span class="badge" style="background:#EEEDFE;color:#3C3489;font-size:9px;">MULTI</span></div>
+    </div>
+    <div class="content">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span style="font-size:12px;color:var(--color-text-tertiary);">284 recursos · Primaria / Matemáticas</span>
+        <select style="font-size:12px;padding:5px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);"><option>★ Top ventas</option><option>Más recientes</option><option>Mejor valorados</option><option>Precio: menor a mayor</option></select>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="go('detail')">
+          <div class="card-thumb" style="background:#FCEBEB;">📐</div>
+          <div class="card-body">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;"><div class="card-title" style="margin-bottom:0;">Fracciones paso a paso</div><span class="top-badge">★ Top</span></div>
+            <div class="tags"><span class="tag tp">3.º Pri</span><span class="tag tp">4.º Pri</span></div>
+            <div class="card-foot"><span class="price">2,99 €</span><span><span class="star">★</span> 4.9 · 312</span></div>
+          </div>
+        </div>
+        <div class="card" onclick="go('detail')">
+          <div class="card-thumb" style="background:#E6F1FB;">🔢</div>
+          <div class="card-body">
+            <div class="card-title">Tablas de multiplicar kit</div>
+            <div class="tags"><span class="tag tp">2.º Pri</span><span class="tag tp">3.º Pri</span></div>
+            <div class="card-foot"><span class="free">Gratis</span><span><span class="star">★</span> 4.8 · 401</span></div>
+          </div>
+        </div>
+        <div class="card" onclick="go('detail')">
+          <div class="card-thumb" style="background:#EEEDFE;">📊</div>
+          <div class="card-body">
+            <div class="card-title">Intro a la estadística</div>
+            <div class="tags"><span class="tag tp">6.º Pri</span><span class="tag ts">1.º ESO</span><span class="tag tm">Multi</span></div>
+            <div class="card-foot"><span class="price">3,50 €</span><span><span class="star">★</span> 4.7 · 88</span></div>
+          </div>
+        </div>
+        <div class="card" onclick="go('detail')">
+          <div class="card-thumb" style="background:#FAEEDA;">📏</div>
+          <div class="card-body">
+            <div class="card-title">Geometría: áreas y perímetros</div>
+            <div class="tags"><span class="tag tp">5.º Pri</span><span class="tag tp">6.º Pri</span></div>
+            <div class="card-foot"><span class="price">4,00 €</span><span><span class="star">★</span> 4.6 · 55</span></div>
+          </div>
+        </div>
+        <div class="card" onclick="go('detail')">
+          <div class="card-thumb" style="background:#FBEAF0;">🎨</div>
+          <div class="card-body">
+            <div class="card-title">Taller de acuarela</div>
+            <div class="tags"><span class="tag tp">2.º–4.º Pri</span></div>
+            <div class="card-foot"><span class="price">5,00 €</span><span><span class="star">★</span> 5.0 · 41</span></div>
+          </div>
+        </div>
+        <div class="card" onclick="go('detail')">
+          <div class="card-thumb" style="background:#EAF3DE;">🔬</div>
+          <div class="card-body">
+            <div class="card-title">El sistema solar</div>
+            <div class="tags"><span class="tag tp">5.º Pri</span></div>
+            <div class="card-foot"><span class="price">4,50 €</span><span><span class="star">★</span> 4.8 · 87</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="border-top:0.5px solid var(--color-border-tertiary);padding:11px 20px;background:var(--color-background-secondary);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+    <span style="font-size:11px;color:var(--color-text-tertiary);">Profetop.es · Los mejores recursos, para los mejores profes · Comisión: 15%</span>
+    <div style="display:flex;gap:10px;">
+      <span style="font-size:11px;color:var(--color-text-tertiary);cursor:pointer;">Aviso legal</span>
+      <span style="font-size:11px;color:var(--color-text-tertiary);cursor:pointer;">Privacidad</span>
+      <span style="font-size:11px;color:var(--color-text-tertiary);cursor:pointer;">Contacto</span>
+    </div>
+  </div>
+</div>
+
+<!-- DETALLE -->
+<div id="s-detail" class="screen">
+  <div style="padding:16px 20px;border-bottom:0.5px solid var(--color-border-tertiary);">
+    <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:10px;cursor:pointer;" onclick="go('home')">← Tienda / Primaria / Matemáticas / <span style="color:#A32D2D;">Fracciones paso a paso</span></div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div style="height:150px;width:190px;border-radius:var(--border-radius-lg);background:#FCEBEB;display:flex;align-items:center;justify-content:center;font-size:48px;flex-shrink:0;">📐</div>
+      <div style="flex:1;min-width:200px;">
+        <div style="display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap;align-items:center;">
+          <span class="tag tp">3.º Primaria</span><span class="tag tp">4.º Primaria</span><span class="top-badge">★ Top ventas</span>
+        </div>
+        <h2 style="font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px;">Fracciones paso a paso</h2>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;">por <span style="color:#A32D2D;cursor:pointer;">María García</span> · 18 fichas imprimibles · PDF</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px;line-height:1.6;">Pack completo de 18 fichas para trabajar fracciones de forma progresiva. Incluye teoría visual, ejercicios guiados y actividades de repaso. Listo para imprimir.</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+          <span style="font-size:22px;font-weight:500;color:var(--color-text-primary);">2,99 €</span>
+          <span style="font-size:12px;color:var(--color-text-tertiary);"><span class="star">★</span> 4.9 · 312 valoraciones</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-primary" style="padding:10px 20px;font-size:13px;">Comprar ahora</button>
+          <button class="btn-outline" style="padding:10px 20px;font-size:13px;">Vista previa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:14px 20px;">
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px;">Valoraciones recientes</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="font-size:12px;color:var(--color-text-secondary);padding:10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-weight:500;color:var(--color-text-primary);">Laura M.</span><span style="color:#EF9F27;">★★★★★</span></div>Mis alumnos de 4.º lo han entendido mucho mejor que con el libro. Las fichas son clarísimas.</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);padding:10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-weight:500;color:var(--color-text-primary);">Carlos R.</span><span style="color:#EF9F27;">★★★★★</span></div>Muy bien organizado. Lo he usado en 3.º y ha funcionado perfecto como repaso.</div>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="s-login" class="screen">
+  <div class="modal-bg">
+    <div class="modal">
+      <h2>Bienvenido a Profetop.es</h2>
+      <p>Inicia sesión para acceder a tus recursos y panel de ventas.</p>
+      <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="tu@email.com"></div>
+      <div class="fg"><label>Contraseña</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn-primary" style="width:100%;padding:10px;font-size:13px;margin-bottom:10px;" onclick="go('docente')">Entrar</button>
+      <div style="text-align:center;font-size:12px;color:var(--color-text-secondary);">¿No tienes cuenta? <span style="color:#A32D2D;cursor:pointer;" onclick="go('register')">Regístrate como profe</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="s-register" class="screen">
+  <div class="modal-bg">
+    <div class="modal">
+      <h2>Empieza a vender en Profetop.es</h2>
+      <p>Crea tu cuenta como docente vendedor. Es gratis y solo tarda 2 minutos.</p>
+      <div class="fg"><label>Nombre completo</label><input type="text" placeholder="Tu nombre"></div>
+      <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="tu@email.com"></div>
+      <div class="fg"><label>Etapa en la que impartes</label><select><option>Primaria</option><option>Secundaria (ESO)</option><option>Ambas</option></select></div>
+      <div class="fg"><label>Contraseña</label><input type="password" placeholder="Mínimo 8 caracteres"></div>
+      <button class="btn-primary" style="width:100%;padding:10px;font-size:13px;margin-bottom:10px;" onclick="go('docente')">Crear cuenta gratis</button>
+      <div style="text-align:center;font-size:11px;color:var(--color-text-tertiary);">Al registrarte aceptas los términos de uso y la comisión del 15% por venta.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL DOCENTE -->
+<div id="s-docente" class="screen">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);flex-wrap:wrap;gap:8px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:32px;height:32px;border-radius:50%;background:#FCEBEB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:#791F1F;">MG</div>
+      <div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);">María García</div><div style="font-size:11px;color:var(--color-text-tertiary);">Profe vendedora · Profetop.es</div></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-primary" style="font-size:12px;">+ Subir recurso</button>
+      <button class="btn-outline" style="font-size:12px;" onclick="go('home')">Ver tienda ↗</button>
+    </div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><div class="mlabel">Ingresos netos</div><div class="mval">341 €</div><div class="mdelta up">▲ 18% vs anterior</div></div>
+    <div class="metric"><div class="mlabel">Ventas totales</div><div class="mval">127</div><div class="mdelta up">▲ 23 este mes</div></div>
+    <div class="metric"><div class="mlabel">Recursos activos</div><div class="mval">14</div><div class="mdelta neu">3 en revisión</div></div>
+    <div class="metric"><div class="mlabel">Valoración media</div><div class="mval">4.8 ★</div><div class="mdelta neu">89 reseñas</div></div>
+  </div>
+  <div style="padding:14px 18px;">
+    <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Mis recursos — rendimiento</div>
+    <table class="tbl">
+      <thead><tr><th style="width:44%;">Recurso</th><th style="width:14%;">Ventas</th><th style="width:16%;">Ingresos</th><th style="width:26%;">Popularidad</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tname">Fracciones paso a paso</span><span class="tag tp" style="font-size:9px;">Matemáticas · Pri</span></td><td>48</td><td>143 €</td><td><div style="height:4px;border-radius:2px;background:var(--color-border-tertiary);"><div style="width:100%;height:100%;border-radius:2px;background:#A32D2D;"></div></div></td></tr>
+        <tr><td><span class="tname">Estadística introducción</span><span class="tag tm" style="font-size:9px;">Multi-nivel</span></td><td>31</td><td>109 €</td><td><div style="height:4px;border-radius:2px;background:var(--color-border-tertiary);"><div style="width:65%;height:100%;border-radius:2px;background:#A32D2D;"></div></div></td></tr>
+        <tr><td><span class="tname">Comprensión lectora A2</span><span class="tag ts" style="font-size:9px;">Lengua · Pri</span></td><td>24</td><td style="color:var(--color-text-tertiary);">Gratis</td><td><div style="height:4px;border-radius:2px;background:var(--color-border-tertiary);"><div style="width:50%;height:100%;border-radius:2px;background:#378ADD;"></div></div></td></tr>
+        <tr><td><span class="tname">El sistema solar</span><span class="tag tp" style="font-size:9px;">Ciencias · Pri</span></td><td>15</td><td>68 €</td><td><div style="height:4px;border-radius:2px;background:var(--color-border-tertiary);"><div style="width:31%;height:100%;border-radius:2px;background:#A32D2D;"></div></div></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px;">
+      <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Próximo cobro — 30 abr</div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);"><span>Ventas brutas</span><span>401 €</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);"><span>Comisión Profetop.es (15%)</span><span style="color:#A32D2D;">− 60 €</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:5px 0;font-weight:500;"><span>A cobrar</span><span style="color:#0F6E56;">341 €</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL ADMIN -->
+<div id="s-admin" class="screen">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 18px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);flex-wrap:wrap;gap:6px;">
+    <span style="font-size:12px;font-weight:500;color:var(--color-text-secondary);">Panel de administración · Profetop.es</span>
+    <span style="font-size:11px;color:#A32D2D;font-weight:500;">● 7 recursos pendientes de revisión</span>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><div class="mlabel">Comisiones cobradas</div><div class="mval">1.284 €</div><div class="mdelta up">▲ 22% vs anterior</div></div>
+    <div class="metric"><div class="mlabel">GMV total</div><div class="mval">8.560 €</div><div class="mdelta up">▲ 19% vs anterior</div></div>
+    <div class="metric"><div class="mlabel">Profes activos</div><div class="mval">143</div><div class="mdelta neu">+12 este mes</div></div>
+    <div class="metric"><div class="mlabel">Recursos publicados</div><div class="mval">1.847</div><div class="mdelta neu">+34 este mes</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 240px;">
+    <div style="padding:14px 18px;border-right:0.5px solid var(--color-border-tertiary);">
+      <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Top profes este mes</div>
+      <table class="tbl">
+        <thead><tr><th style="width:36%;">Profe</th><th style="width:16%;">Recursos</th><th style="width:16%;">Ventas</th><th style="width:16%;">GMV</th><th style="width:16%;">Estado</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tname">María García</span></td><td>14</td><td>127</td><td>401 €</td><td><span class="badge b-ok">Activa</span></td></tr>
+          <tr><td><span class="tname">Jordi Puig</span></td><td>9</td><td>98</td><td>312 €</td><td><span class="badge b-ok">Activo</span></td></tr>
+          <tr><td><span class="tname">Ana Villanueva</span></td><td>21</td><td>84</td><td>278 €</td><td><span class="badge b-ok">Activa</span></td></tr>
+          <tr><td><span class="tname">Pedro Martín</span></td><td>6</td><td>61</td><td>190 €</td><td><span class="badge b-rev">Revisión</span></td></tr>
+          <tr><td><span class="tname">Laura Sanz</span></td><td>11</td><td>55</td><td>174 €</td><td><span class="badge b-new">Nueva</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:14px;">
+      <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Pendientes de revisión</div>
+      <div class="rev-item"><div class="rev-title">Álgebra básica 1.º ESO</div><div class="rev-meta">Jordi Puig · Matemáticas · hace 2h</div><div class="rev-btns"><button class="abtn ok">Aprobar</button><button class="abtn dn">Rechazar</button></div></div>
+      <div class="rev-item"><div class="rev-title">Pack exámenes Ciencias 6.º</div><div class="rev-meta">Laura Sanz · Ciencias · hace 5h</div><div class="rev-btns"><button class="abtn ok">Aprobar</button><button class="abtn dn">Rechazar</button></div></div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:12px;">+5 recursos más en cola</div>
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em;">Próximos pagos</div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);"><span>María García</span><span style="color:#0F6E56;font-weight:500;">341 €</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);"><span>Jordi Puig</span><span>265 €</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;color:var(--color-text-secondary);"><span>Ana Villanueva</span><span>236 €</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+}
+function setOn(btn){
+  document.querySelectorAll('.npill').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+</script>
